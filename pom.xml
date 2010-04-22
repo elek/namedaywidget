@@ -3,7 +3,7 @@
     <groupId>net.anzix.android</groupId>
     <artifactId>day</artifactId>
     <packaging>apk</packaging>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <name>Anzix names</name>
     <scm>
         <connection>scm:git:git@github.com:elek/namedaywidget.git</connection>
