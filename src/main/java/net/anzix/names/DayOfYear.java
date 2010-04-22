@@ -1,4 +1,4 @@
-package net.anzix.android;
+package net.anzix.names;
 
 import java.util.Calendar;
 
@@ -14,7 +14,7 @@ public class DayOfYear {
 
     private int day;
 
-    private DayOfYear(int day) {
+    public DayOfYear(int day) {
         this.day = day;
     }
 

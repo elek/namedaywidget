@@ -1,4 +1,4 @@
-package net.anzix.android;
+package net.anzix.names;
 
 import android.content.res.Resources;
 import android.util.Log;
@@ -16,6 +16,14 @@ import java.util.Map;
  * @author elek
  */
 public class Namedays {
+
+    public Map<DayOfYear, String> getNames() {
+        return names;
+    }
+
+    public void setNames(Map<DayOfYear, String> names) {
+        this.names = names;
+    }
 
     public static final String LOGID = "Namedays";
 

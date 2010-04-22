@@ -3,8 +3,6 @@
 	android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="wrap_content"
 	android:padding="12dp">
-	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:id="@+id/day" android:text="11.02"
-        android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 	<TextView android:id="@+id/name"
 		android:layout_width="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"

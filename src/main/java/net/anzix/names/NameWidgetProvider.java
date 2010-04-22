@@ -1,4 +1,4 @@
-package net.anzix.android;
+package net.anzix.names;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -60,8 +60,6 @@ public class NameWidgetProvider extends AppWidgetProvider {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
 
-            Log.i("namedays", "" + new Date(cal.getTimeInMillis() + updateRate));
-            Log.i("namedays", "" + new Date(System.currentTimeMillis()));
             alarms.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), updateRate, newPending);
         } else {
             alarms.cancel(newPending);

@@ -1,16 +1,14 @@
-package net.anzix.android;
+package net.anzix.names;
 
 import android.app.ListActivity;
-import android.content.ContentResolver;
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import android.provider.ContactsContract.Data;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,33 +18,45 @@ import java.util.Map;
 
 public class MainActivity extends ListActivity {
 
-    private int NEXT_NAMEDAYS = 1;
+    private static final int FIND_ID = 1;
 
     private Namedays namedays;
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, FIND_ID, 0, "Find in contacts");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case FIND_ID:
+                DayOfYear doy = new DayOfYear(info.position + 1);
+                findTodays(namedays.getName(doy));
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-       // menu.add(0, 0, 0, "Közelgő napok");
         return true;
+    }
+
+    public void findTodays(String name) {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        intent.putExtra("nameday", name);
+        startActivity(intent);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(Namedays.LOGID, WIFI_SERVICE);
-
-
-        Cursor cursor = getContentResolver().query(Data.CONTENT_URI,
-                new String[]{Data._ID, StructuredName.GIVEN_NAME},
-                Data.MIMETYPE + "='" + StructuredName.CONTENT_ITEM_TYPE+"'",
-                null, null);
-
-//Data.CONTACT_ID + "=?" + " AND "
-//                + Data.MIMETYPE + "='" + Phone.CONTENT_ITEM_TYPE + "'"
-
-        if (cursor.moveToFirst()){
-            Log.i(Namedays.LOGID, cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME)));
-        }
         return true;
     }
 
@@ -77,5 +87,9 @@ public class MainActivity extends ListActivity {
         SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.name, new String[]{"day", "name"}, new int[]{R.id.day, R.id.name});
         setListAdapter(adapter);
         setSelection(selected);
+        registerForContextMenu(getListView());
+
+
+
     }
 }
