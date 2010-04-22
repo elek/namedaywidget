@@ -26,6 +26,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+<distributionManagement>
+  <!-- use the following if you're not using a snapshot version. -->
+  <repository>
+    <id>anzix</id>
+    <name>Anzix</name>
+    <url>scp://anzix.net/home/elek/wwwroot/anzix.net/maven</url>
+  </repository>
+  <!-- use the following if you ARE using a snapshot version. -->
+  <snapshotRepository>
+    <id>anzix-snapshot</id>
+    <name>Anzix snapshot</name>
+    <url>scp://anzix.net/home/elek/wwwroot/anzix.net/maven</url>
+  </snapshotRepository>
+</distributionManagement>
 
     <build>
 
