@@ -1,0 +1,26 @@
+Simple 2x1 widget for android homescreen display the current HUNGARIAN namedays.
+
+The widget also sends notifications if you have a contacts with with the same
+given name of the current nameday.
+
+Icon from the Tangor poject
+http://tango.freedesktop.org/Tango_Desktop_Project
+Thanks
+
+Known limitations:
+- Hungarian namedays only
+- If you set back the date you should remove and readd the widget
+- Notifications can not work without an active widgets
+- No i18n support currently
+
+--------------------------------------------------------------------------------
+
+Egy egyszerű 2x1 névnap widget, ami kijelzi az aktuális névnapot.
+Ha a contact listában van olyan keresztnevű ember (given name), ami az aktuális
+nap, akkor értesítést küld az aktuális névnapról.
+
+Korlátok:
+- Az értesítés csak akkor működik, ha van aktív névnap widget a telefonon
+- A GUI elem címkék angolok, és nincsenek szépen kifejtve
+- Ha a dátumot visszafelé állítjuk, akkor a widgetet el kell távolítani, és újra
+hozzáadni az asztalhoz.
