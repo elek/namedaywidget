@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Névnapok</string>
+    <string name="current">Aktuális</string>
+    <string name="find_in_contacts">Keresés a névjegyekben</string>
+    <string name="about">Névjegy</string>
+    <string name="notification">Aktuális névnapok</string>
+    <string name="about_txt"><![CDATA[Névnap alkalmazás\n\n
+Névnap widget és névnap értesítő szolgáltatás\n\n
+Ismert hibák:\n
+* Dátum előre állítás esetén a névnap widgetet törölni kell és újra létrehozni\n
+* A figyelmeztetések csak akkor használhatóak, ha a widget látszik\n\n
+Hibajelentés: http://github.com/elek/namedaywidget\n\n
+Az ikon a http://tango.freedesktop.org/ műve.
+    ]]></string>
+</resources>
