@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Names</string>
+    <string name="current">Current</string>
+    <string name="find_in_contacts">Find in contacts</string>
+    <string name="about">About</string>
+    <string name="notification">Current namedays!</string>
+    <string name="about_txt"><![CDATA[Names\n\n
+Simple nameday widget and notifications.\n\n
+Known limitations:\n
+* Widget must be installed for the notifications.\n
+* If you change back your date then you should add and remove the widget.\n\n
+Home: http://github.com/elek/namedaywidget\n\n
+Icon is designed by http://tango.freedesktop.org/. Thx.
+    ]]></string>
 </resources>

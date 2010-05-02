@@ -40,7 +40,6 @@ public class NameService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.i("NAMEDAYS", "Start service");
         namedays = new Namedays(getResources());
         int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
         RemoteViews remoteView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget);
@@ -72,7 +71,7 @@ public class NameService extends Service {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
             int icon = R.drawable.namedayb;
 
-            CharSequence tickerText = "Nameday";
+            CharSequence tickerText = this.getString(R.string.app_name);
             long when = System.currentTimeMillis();
 
             Notification notification = new Notification(icon, tickerText, when);
@@ -80,7 +79,7 @@ public class NameService extends Service {
 
             notification.defaults |= Notification.FLAG_AUTO_CANCEL;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            CharSequence contentTitle = "Somebody has nameday today!";
+            CharSequence contentTitle = this.getString(R.string.notification);
             CharSequence contentText = fullNames;
 
             Intent notificationIntent = new Intent(this, ContactsActivity.class);

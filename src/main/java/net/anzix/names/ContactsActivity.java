@@ -40,14 +40,12 @@ public class ContactsActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(list.get(position).get("uri")));
-        Log.i("names", intent.getDataString());
         startActivity(intent);
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         name = (String) intent.getStringExtra("nameday");
-        Log.i("names", "onNewINtent" + name);
         refresh(name);
 
     }
@@ -55,7 +53,6 @@ public class ContactsActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("names","onCreate");
         if (name != null) {
             refresh(name);
         } else if (getIntent().getStringExtra("nameday")!=null){
