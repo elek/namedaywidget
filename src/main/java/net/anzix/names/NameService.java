@@ -50,6 +50,11 @@ public class NameService extends Service {
 
         remoteView.setTextViewText(R.id.message1, name.replace(' ', '\n').replace(",", ""));
 
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.setClass(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+        remoteView.setOnClickPendingIntent(R.id.widget, pendingIntent);
+
         ContentResolver resolver = getContentResolver();
         Cursor cursor = resolver.query(Data.CONTENT_URI, new String[]{Data._ID, StructuredName.GIVEN_NAME, StructuredName.DISPLAY_NAME, ContactsContract.Contacts.LOOKUP_KEY, StructuredName.RAW_CONTACT_ID},
                 Data.MIMETYPE + "='" + StructuredName.CONTENT_ITEM_TYPE + "' AND " + ContactsContract.Contacts.IN_VISIBLE_GROUP, null, null);
