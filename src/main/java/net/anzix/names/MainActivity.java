@@ -25,8 +25,14 @@ public class MainActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 1;
 
+    private static final int MENU_PREFERENCES = 2;
+
+    private static final int MENU_REFRESH = 3;
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {        
+        menu.add(0, MENU_PREFERENCES, 0, this.getString(R.string.preferences));
+        menu.add(0, MENU_REFRESH, 0, this.getString(R.string.refresh));
         menu.add(0, MENU_ABOUT, 0, this.getString(R.string.about));
         return true;
     }
@@ -35,13 +41,19 @@ public class MainActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MENU_ABOUT:
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getText(R.string.about_txt)).setCancelable(true);
                 AlertDialog alert = builder.create();
                 alert.show();
                 return true;
-
+            case MENU_REFRESH:
+                Intent intent = new Intent(this, UpdateService.class);
+                startService(intent);
+                return true;
+            case MENU_PREFERENCES:
+                Intent i2 = new Intent(this, MyPreferencesActivity.class);
+                startActivity(i2);
+                return true;
         }
         return false;
     }
@@ -72,7 +84,6 @@ public class MainActivity extends ListActivity {
         intent.putExtra("nameday", name);
         startActivity(intent);
     }
-   
 
     /** Called when the activity is first created. */
     @Override

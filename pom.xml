@@ -40,7 +40,7 @@
             <url>http://anzix.net/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyMMddHHmm</maven.build.timestamp.format>
@@ -122,43 +122,33 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <id>zipalign</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <executable>${android.sdk}/tools/zipalign</executable>
+                            <arguments>
+                                <argument>-f</argument>
+                                <argument>4</argument>
+                                <argument>target/${project.build.finalName}.apk</argument>
+                                <argument>target/${project.build.finalName}-zipped.apk</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
 
 
         </plugins>
-    </build>
-    <profiles>
-        <profile>
-            <id>sign</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.1.1</version>
-                        <executions>
-                            <execution>
-                                <id>zipalign</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <executable>${android.sdk}/tools/zipalign</executable>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>4</argument>
-                                        <argument>target/${project.build.finalName}.apk</argument>
-                                        <argument>target/${project.build.finalName}-zipped.apk</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    </build>   
 </project>
 

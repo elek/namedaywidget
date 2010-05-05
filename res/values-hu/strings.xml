@@ -4,6 +4,8 @@
     <string name="current">Aktuális</string>
     <string name="find_in_contacts">Keresés a névjegyekben</string>
     <string name="about">Névjegy</string>
+    <string name="preferences">Beállítások</string>
+    <string name="refresh">Frissít</string>
     <string name="notification">Aktuális névnapok</string>
     <string name="about_txt"><![CDATA[Névnap alkalmazás\n\n
 Névnap widget és névnap értesítő szolgáltatás\n\n

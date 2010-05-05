@@ -22,6 +22,9 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget" />
         </receiver>
         <service android:name=".NameService"></service>
+        <service android:name=".UpdateService"></service>
+        <service android:name=".SchedulingService"></service>
+        <activity android:name="MyPreferencesActivity"></activity>
 
     </application>
 </manifest> 

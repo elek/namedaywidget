@@ -4,6 +4,8 @@
     <string name="current">Current</string>
     <string name="find_in_contacts">Find in contacts</string>
     <string name="about">About</string>
+    <string name="preferences">Preferences</string>
+    <string name="refresh">Refresh</string>
     <string name="notification">Current namedays!</string>
     <string name="about_txt"><![CDATA[Names\n\n
 Simple nameday widget and notifications.\n\n
