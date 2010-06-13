@@ -13,6 +13,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -77,15 +78,16 @@ public class UpdateService extends Service {
     }
 
     private void notificationService() {
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notification", true)) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getBoolean("notification", true)) {
             DayOfYear doy = DayOfYear.valueOf(Calendar.getInstance());
             String name = namedays.getName(doy);
 
             ContentResolver resolver = getContentResolver();
-            Cursor cursor = resolver.query(Data.CONTENT_URI, new String[]{Data._ID, StructuredName.GIVEN_NAME, StructuredName.DISPLAY_NAME, ContactsContract.Contacts.LOOKUP_KEY, StructuredName.RAW_CONTACT_ID},
+            Cursor cursor = resolver.query(Data.CONTENT_URI, new String[]{Data._ID, StructuredName.FAMILY_NAME, StructuredName.GIVEN_NAME, StructuredName.DISPLAY_NAME, ContactsContract.Contacts.LOOKUP_KEY, StructuredName.RAW_CONTACT_ID},
                     Data.MIMETYPE + "='" + StructuredName.CONTENT_ITEM_TYPE + "' AND " + ContactsContract.Contacts.IN_VISIBLE_GROUP, null, null);
 
-            Map<Integer, Map<String, String>> result = ContactUtility.findContacts(cursor, name);
+            Map<Integer, Map<String, String>> result = ContactUtility.instance.findContacts(cursor, name, sp);
             if (result.size() > 0) {
                 StringBuilder fullNames = new StringBuilder();
                 boolean first = true;

@@ -5,6 +5,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * Name widget definitions.
+ * 
+ * @author elek
+ */
 public class NameWidgetProvider extends AppWidgetProvider {
 
     @Override

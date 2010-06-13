@@ -4,46 +4,79 @@
  */
 package net.anzix.names;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Data;
 import android.util.Log;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Utilitiy class to process contacts results.
+ * 
  * @author elek
  */
 public class ContactUtility {
 
+    public static ContactUtility instance = new ContactUtility();
 
+    public ContactUtility() {
+    }
 
-    public static Map<Integer, Map<String, String>> findContacts(Cursor cursor, String current) {
+    private String getName(Cursor cursor, String type) {
+        if (cursor.getColumnIndex(type) != -1) {
+            String givenName = cursor.getString(cursor.getColumnIndex(type));
+            return givenName;
+        }
+        return null;
+    }
+
+    private void addToList(List<String> names, String givenName) {
+        if (givenName != null) {
+            for (String st : givenName.replaceAll(",", "").split(" ")) {
+                names.add(st);
+            }
+        }
+    }
+
+    public Map<Integer, Map<String, String>> findContacts(Cursor cursor, String current, SharedPreferences preferences) {
         Map<Integer, Map<String, String>> result = new HashMap();
         if (cursor.moveToFirst()) {
             do {
-                if (cursor.getColumnIndex(StructuredName.GIVEN_NAME) == -1) {
-                    continue;
+                List<String> names = new ArrayList();
+
+                String givenName = getName(cursor, StructuredName.GIVEN_NAME);
+                String displayName = getName(cursor, StructuredName.DISPLAY_NAME);
+                String familyName = getName(cursor, StructuredName.FAMILY_NAME);
+                if (preferences.getBoolean("find_in_given_name", true)) {
+                    addToList(names, givenName);
                 }
-                String givenName = cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME));
-                if (givenName == null) {
-                    continue;
+                if (preferences.getBoolean("find_in_display_name", false)) {
+                    addToList(names, displayName);
                 }
-                String[] givenNames = givenName.split(" ");
+                if (preferences.getBoolean("find_in_family_name", false)) {
+                    addToList(names, familyName);
+                }
                 String[] todays = current.split(",");
-                for (String given : givenNames) {
+                for (String name : names) {
                     for (String tod : todays) {
-                        if (given.trim().equals(tod.trim())) {
+                        if (name.trim().equals(tod.trim())) {
                             Map<String, String> item = new HashMap();
+
                             String n = givenName;
-                            int idx = cursor.getColumnIndex(StructuredName.DISPLAY_NAME);
-                            if (idx > -1) {
-                                n = cursor.getString(idx);
+                            if (displayName != null) {
+                                n = displayName;
+                            }
+                            if (n == null && familyName != null) {
+                                n = familyName;
                             }
                             item.put("name", n);
+
                             int id = cursor.getColumnIndex(Data._ID);
                             if (id == -1) {
                                 Log.w("names", "No id!!!");
@@ -60,7 +93,7 @@ public class ContactUtility {
                 }
             } while (cursor.moveToNext());
         }
-
         return result;
+
     }
 }

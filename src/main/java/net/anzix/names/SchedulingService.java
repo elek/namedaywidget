@@ -12,13 +12,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import java.util.Calendar;
 
 /**
- *
+ * Utility to schedule the update service.
  * @author elek
  */
 public class SchedulingService extends Service {
@@ -28,7 +27,12 @@ public class SchedulingService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        boolean start = intent.getExtras().getBoolean(START);
+
+        boolean start = true;
+        if (intent == null) {
+            intent.getExtras().getBoolean(START);
+
+        }
         if (start) {
             //start alarm
             Log.i("names", "alarm started");
@@ -41,7 +45,7 @@ public class SchedulingService extends Service {
             boolean not = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notification", true);
             if (!not && ids.length == 0) {
                 setAlarm(this, false);
-                Log.i("names","alarm stopped");
+                Log.i("names", "alarm stopped");
             }
 
         }
@@ -50,16 +54,23 @@ public class SchedulingService extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
+
+
     }
 
     public static PendingIntent makeControlPendingIntent(Context context) {
         Intent active = new Intent(context, UpdateService.class);
-        return (PendingIntent.getService(context, 0, active, PendingIntent.FLAG_UPDATE_CURRENT));
+
+
+        return (PendingIntent.getService(context,
+                0, active, PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     public static void setAlarm(Context context, boolean start) {
         PendingIntent newPending = makeControlPendingIntent(context);
         AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+
         if (start) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.AM_PM, Calendar.AM);
@@ -67,8 +78,11 @@ public class SchedulingService extends Service {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             alarms.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), 24 * 60 * 60 * 1000, newPending);
+
+
         } else {
             alarms.cancel(newPending);
+
         }
     }
 }
