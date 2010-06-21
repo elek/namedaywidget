@@ -1,5 +1,6 @@
 package net.anzix.names;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
 
@@ -17,13 +18,11 @@ import java.util.Map;
  */
 public class Namedays {
 
-    public Map<DayOfYear, String> getNames() {
-        return names;
-    }
+    private static Namedays instance;
 
-    public void setNames(Map<DayOfYear, String> names) {
-        this.names = names;
-    }
+    private Map<String, CountryRecord> countries = new HashMap();
+
+    private String currentCountry;
 
     public static final String LOGID = "Namedays";
 
@@ -31,9 +30,42 @@ public class Namedays {
 
     private Map<DayOfYear, String> names = new HashMap<DayOfYear, String>();
 
-    public Namedays(Resources resources) {
+    public static Namedays getInstance(SharedPreferences p, Resources r) {
+        if (instance == null) {
+            instance = new Namedays();
+            instance.init(p, r);
+        }
+        return instance;
+    }
+
+    public static Map<String,CountryRecord> getSupportedCountries(){
+        Map<String, CountryRecord> c = new HashMap();
+        c.put("hu", new CountryRecord("Hungary", R.raw.nevnap));
+        c.put("dk", new CountryRecord("Denmark", R.raw.dk));
+        c.put("no", new CountryRecord("Norway", R.raw.no));
+        c.put("pl", new CountryRecord("Poland", R.raw.pl));
+        c.put("se", new CountryRecord("Swedish", R.raw.se));
+        c.put("cz", new CountryRecord("Czech Republic", R.raw.cz));
+        c.put("cz", new CountryRecord("Slovakia", R.raw.sk));
+
+        return c;
+    }
+    public void init(SharedPreferences p, Resources resources) {
+        countries = getSupportedCountries();
+        reload(resources, p.getString("country", "hu"));
+    }
+
+    public void reload(Resources resources, String country) {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resources.openRawResource(R.raw.nevnap)));
+            Log.d("names", "reloading "+country);
+            names.clear();
+            keys.clear();
+            currentCountry = country;
+            int rawId = countries.get("hu").rawId;
+            if (countries.get(country)!=null){
+                rawId = countries.get(country).rawId;
+            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resources.openRawResource(rawId)));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
@@ -45,6 +77,7 @@ public class Namedays {
         } catch (IOException ex) {
             Log.e("NAMES", "Error on loading names", ex);
         }
+
     }
 
     public String getName(DayOfYear dof) {
@@ -53,5 +86,30 @@ public class Namedays {
 
     public List<DayOfYear> getKeys() {
         return keys;
+    }
+
+    public Map<DayOfYear, String> getNames() {
+        return names;
+    }
+
+    public void setNames(Map<DayOfYear, String> names) {
+        this.names = names;
+    }
+
+    public Map<String, CountryRecord> getCountries() {
+        return countries;
+    }
+
+   
+
+    public static class CountryRecord{
+        public String name;
+        public int rawId;
+
+        public CountryRecord(String name, int rawId) {
+            this.name = name;
+            this.rawId = rawId;
+        }
+        
     }
 }

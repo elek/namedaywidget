@@ -37,7 +37,7 @@ public class UpdateService extends Service {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         Log.i("names", "onstart");
-        loadNames();
+        namedays = Namedays.getInstance(PreferenceManager.getDefaultSharedPreferences(this), getResources());
         refreshWidgets();
         notificationService();
     }
@@ -45,12 +45,6 @@ public class UpdateService extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
-    }
-
-    private void loadNames() {
-        if (namedays == null) {
-            namedays = new Namedays(getResources());
-        }
     }
 
     private void refreshWidgets() {

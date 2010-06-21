@@ -3,7 +3,10 @@ package net.anzix.names;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -29,8 +32,10 @@ public class MainActivity extends ListActivity {
 
     private static final int MENU_REFRESH = 3;
 
+    private String currentCountry;
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {        
+    public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_PREFERENCES, 0, this.getString(R.string.preferences));
         menu.add(0, MENU_REFRESH, 0, this.getString(R.string.refresh));
         menu.add(0, MENU_ABOUT, 0, this.getString(R.string.about));
@@ -82,20 +87,27 @@ public class MainActivity extends ListActivity {
     public void findTodays(String name) {
         Intent intent = new Intent(this, ContactsActivity.class);
         intent.putExtra("nameday", name);
+        Log.d("names", "find " + name);
         startActivity(intent);
     }
 
-    /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onResume() {
+        super.onResume();
+        Log.d("names", "resume");
+        String c = PreferenceManager.getDefaultSharedPreferences(this).getString("country", "hu");
 
-        namedays = new Namedays(getResources());
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.names);
+        if (!c.equals(currentCountry)) {
+            reload();
+        }
+    }
+
+    public void reload() {
+        this.currentCountry = PreferenceManager.getDefaultSharedPreferences(this).getString("country", "hu");
+        namedays = Namedays.getInstance(PreferenceManager.getDefaultSharedPreferences(this), getResources());
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
         DayOfYear now = DayOfYear.valueOf(Calendar.getInstance());
-
+        Log.d("name", "nameday size "+namedays.getKeys().size());
         int i = 0;
         int selected = 0;
         for (DayOfYear doy : namedays.getKeys()) {
@@ -107,11 +119,25 @@ public class MainActivity extends ListActivity {
             item.put("name", namedays.getName(doy));
             i++;
             list.add(item);
+
         }
 
         SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.name, new String[]{"day", "name"}, new int[]{R.id.day, R.id.name});
         setListAdapter(adapter);
         setSelection(selected);
+    }
+
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        setContentView(R.layout.names);
+
+        reload();
+
+
         registerForContextMenu(getListView());
 
 

@@ -8,17 +8,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import java.util.Map;
 
 /**
  *
  * @author elek
  */
 public class MyPreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    ListPreference listPref;
+
+    Map<String, Namedays.CountryRecord> countries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +34,35 @@ public class MyPreferencesActivity extends PreferenceActivity implements SharedP
 
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
 
+        countries = Namedays.getSupportedCountries();
+        
+        String[] keys = new String[countries.size()];
+        String[] values = new String[countries.size()];
+        int i = 0;
+        for (String key : countries.keySet()) {
+            Namedays.CountryRecord rec = countries.get(key);
+            keys[i] = key;
+            values[i] = rec.name;
+            i++;
+        }
+
+        listPref = new ListPreference(this);
+        listPref.setEntries(values);
+        listPref.setEntryValues(keys);
+        listPref.setDialogTitle("Choose your country");
+        listPref.setKey("country");
+        listPref.setTitle("Country");
+        listPref.setSummary(countries.get(sp.getString("country", "hu")).name);
+        listPref.setDefaultValue("hu");
+        root.addPreference(listPref);
+
         PreferenceCategory inlinePrefCat = new PreferenceCategory(this);
         inlinePrefCat.setTitle("Notification");
         root.addPreference(inlinePrefCat);
+
+
+
+
 
         CheckBoxPreference togglePref = new CheckBoxPreference(this);
         togglePref.setKey("notification");
@@ -76,5 +108,12 @@ public class MyPreferencesActivity extends PreferenceActivity implements SharedP
             intent.putExtra(SchedulingService.START, start);
             startService(intent);
         }
+        if (key.equals("country")) {
+            Namedays.getInstance(sp, getResources()).reload(getResources(), sp.getString("country", "hu"));
+            listPref.setSummary(countries.get(sp.getString("country", "hu")).name);
+            Intent intent = new Intent(this, UpdateService.class);
+            startService(intent);
+        }
+
     }
 }
