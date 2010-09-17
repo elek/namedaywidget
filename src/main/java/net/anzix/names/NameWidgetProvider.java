@@ -20,18 +20,14 @@ public class NameWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Intent i = new Intent(context, SchedulingService.class);
-        i.putExtra(SchedulingService.START, true);
-        context.startService(i);
+        SchedulingUtil.schendule(context, true);
         context.startService(new Intent(context, UpdateService.class));
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Intent i = new Intent(context, SchedulingService.class);
-        i.putExtra(SchedulingService.START, false);
-        context.startService(i);
+        SchedulingUtil.schendule(context, false);
         super.onDeleted(context, appWidgetIds);
     }
 

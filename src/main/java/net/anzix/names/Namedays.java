@@ -22,8 +22,6 @@ public class Namedays {
 
     private Map<String, CountryRecord> countries = new HashMap();
 
-    private String currentCountry;
-
     public static final String LOGID = "Namedays";
 
     private List<DayOfYear> keys = new ArrayList();
@@ -60,7 +58,6 @@ public class Namedays {
             Log.d("names", "reloading "+country);
             names.clear();
             keys.clear();
-            currentCountry = country;
             int rawId = countries.get("hu").rawId;
             if (countries.get(country)!=null){
                 rawId = countries.get(country).rawId;
@@ -99,9 +96,7 @@ public class Namedays {
     public Map<String, CountryRecord> getCountries() {
         return countries;
     }
-
    
-
     public static class CountryRecord{
         public String name;
         public int rawId;

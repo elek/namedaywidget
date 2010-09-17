@@ -17,7 +17,8 @@ import android.util.Log;
 import java.util.Map;
 
 /**
- *
+ * Pregerence settign GUI.
+ * 
  * @author elek
  */
 public class MyPreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -104,9 +105,7 @@ public class MyPreferencesActivity extends PreferenceActivity implements SharedP
         if (key.equals("notification")) {
             boolean start = sp.getBoolean(key, true);
             Log.i("names", "preference changed " + start);
-            Intent intent = new Intent(this, SchedulingService.class);
-            intent.putExtra(SchedulingService.START, start);
-            startService(intent);
+            SchedulingUtil.schendule(getApplicationContext(), start);
         }
         if (key.equals("country")) {
             Namedays.getInstance(sp, getResources()).reload(getResources(), sp.getString("country", "hu"));

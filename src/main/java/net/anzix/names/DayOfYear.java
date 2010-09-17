@@ -3,7 +3,7 @@ package net.anzix.names;
 import java.util.Calendar;
 
 /**
- *
+ * Class represents a day in a year (0-365).
  * @author elek
  */
 public class DayOfYear {
@@ -66,6 +66,7 @@ public class DayOfYear {
         return valueOf(date.get(Calendar.MONTH) + 1, date.get(Calendar.DAY_OF_MONTH));
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -80,6 +81,7 @@ public class DayOfYear {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + this.day;

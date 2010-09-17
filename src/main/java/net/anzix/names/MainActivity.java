@@ -132,15 +132,9 @@ public class MainActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.names);
-
         reload();
-
-
         registerForContextMenu(getListView());
-
-
 
     }
 }
